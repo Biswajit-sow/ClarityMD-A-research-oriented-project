@@ -1,36 +1,9 @@
-# Core ML & Data Science
+absl-py==1.4.0
+aiohttp==3.9.5
+albumentations==1.4.11
+annotated-types==0.7.0
+anyio==4.10.0
+...
 torch==2.1.0
 torchvision==0.16.0
-pytorch-lightning
-captum
-scikit-learn
-imbalanced-learn
-pandas
-numpy==1.26.4
-opencv-python-headless
-Pillow
-matplotlib
-scikit-image
-tensorboard
-PyYAML
-
-# Image Augmentation
-albumentations
-
-# Backend & Frontend
-fastapi
-streamlit
-gradio 
-uvicorn
-
-# Utilities & Dev Tools
-pytest
-pre-commit
-black
-flake8
-ipykernel # For notebooks
-
-# LLM Integration
-langchain
-langchain-groq
-python-dotenv
+...git add requirements.txt
