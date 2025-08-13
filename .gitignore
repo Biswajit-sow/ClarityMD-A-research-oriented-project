@@ -1,0 +1,26 @@
+# Python virtual environment
+.venv/
+__pycache__/
+
+# Large dataset - DO NOT UPLOAD
+chest_xray/
+
+# Secret API key file
+.env
+
+# VS Code settings
+.vscode/
+
+# Pytest cache
+.pytest_cache/
+
+# Output folders
+output/
+lightning_logs/
+
+# Any system files
+*.DS_Store
+
+checkpoints
+checkpoint
+models/checkpoints

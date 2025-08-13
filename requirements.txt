@@ -1,0 +1,36 @@
+# Core ML & Data Science
+torch==2.1.0
+torchvision==0.16.0
+pytorch-lightning
+captum
+scikit-learn
+imbalanced-learn
+pandas
+numpy==1.26.4
+opencv-python-headless
+Pillow
+matplotlib
+scikit-image
+tensorboard
+PyYAML
+
+# Image Augmentation
+albumentations
+
+# Backend & Frontend
+fastapi
+streamlit
+gradio 
+uvicorn
+
+# Utilities & Dev Tools
+pytest
+pre-commit
+black
+flake8
+ipykernel # For notebooks
+
+# LLM Integration
+langchain
+langchain-groq
+python-dotenv
