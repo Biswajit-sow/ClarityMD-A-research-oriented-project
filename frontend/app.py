@@ -251,3 +251,4 @@ else:
                 -   **Web Frameworks:** Streamlit 
                 -   **Data Science & Imaging:** Scikit-learn, Pandas, NumPy, OpenCV, Albumentations
             """)
+st.markdown("<div class='footer'>© 2025 Medical Diagnostic Saliency Maps using XAI | Engineered by SweetPoison</div>", unsafe_allow_html=True)
