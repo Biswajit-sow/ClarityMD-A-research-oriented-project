@@ -152,4 +152,56 @@ Combining both significantly increases trust.
    - Doctor uploads chest X-ray  
    - `frontend/app.py` / `frontend/app_gradio.py`
 
-2. **Image Preprocessing**
+2. **Image Preprocessing**  
+   - Resize and normalize  
+   - `data_prep/augmentations.py`
+
+3. **Model Prediction**  
+   - CNN outputs diagnosis and confidence  
+   - `models/lightning_model.py`
+
+4. **Explainability (Grad-CAM)**  
+   - Generates saliency heatmap  
+   - `xai/captum_utils.py`
+
+5. **Visualization**  
+   - Overlay heatmap on original X-ray  
+   - `xai/visualizer.py`
+
+6. **Clinical Summary Generation**  
+   - LLM produces explanation  
+   - `xai/text_generator.py`
+
+7. **AI Patient Guidance**  
+   - Supportive care suggestions generated
+
+8. **Unified Dashboard Display**  
+   - Original image  
+   - Saliency map  
+   - Diagnosis & confidence  
+   - Clinical summary  
+   - Patient guidance
+
+---
+
+## Final Takeaway
+
+This project demonstrates how **Deep Learning, Explainable AI, and Large Language Models** can be combined to build **transparent, trustworthy medical AI systems**.
+
+It goes beyond simple classification by delivering:
+- Interpretability
+- Clinical relevance
+- Ethical AI design
+- Real-world applicability
+
+> **Not just an AI model — a clinically-aware AI assistant.**
+
+---
+
+## Future Scope
+
+- Multi-disease detection
+- EHR integration
+- FDA-compliant validation
+- Multimodal data fusion (reports + images)
+- Real-time hospital deployment
