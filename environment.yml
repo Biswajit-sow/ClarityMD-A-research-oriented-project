@@ -1,0 +1,30 @@
+name: claritymd_env
+channels:
+  - https://repo.anaconda.com/pkgs/snowflake
+  - conda-forge
+dependencies:
+  - python=3.9
+  - snowflake-snowpark-python
+  - streamlit
+  # Use the original, known-good PyTorch versions compatible with Python 3.9
+  - pytorch=2.1.0
+  - torchvision=0.16.0
+  # Prioritize installing opencv from conda-forge for better stability
+  - opencv
+  - captum
+  - scikit-learn
+  - imbalanced-learn
+  - pandas
+  - pyyaml
+  - pillow
+  - matplotlib
+  - scikit-image
+  - pip
+  - pip:
+    # These pip versions are known to be stable with Python 3.9
+    - langchain==0.2.5
+    - langchain-core==0.2.10
+    - langchain-groq==0.1.5
+    - python-dotenv
+    - albumentations
+    - gradio
