@@ -8,15 +8,12 @@ import numpy as np
 import cv2
 import glob
 import base64
-
-
+from datetime import datetime
 
 # --- Python Path Fix & Imports ---
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(APP_ROOT)
 sys.path.insert(0, PROJECT_ROOT)
-
-
 
 from models.lightning_model import LitClassificationModel
 from data_prep.augmentations import get_val_transforms
@@ -24,15 +21,11 @@ from xai.captum_utils import generate_gradcam_attributions
 from xai.visualizer import overlay_heatmap_on_image
 from xai.text_generator import generate_llm_explanation
 
-
-
 # --- Helper function to encode images for CSS display ---
 def get_image_as_base64(image_array, format='jpeg'):
     """Converts a numpy array image to a base64 string."""
     _, buffer = cv2.imencode(f'.{format}', image_array)
     return base64.b64encode(buffer).decode()
-
-
 
 # --- VANTA.JS ANIMATED NETWORK EFFECT + RESPONSIVE DESIGN ---
 def app_styling():
@@ -123,18 +116,22 @@ def app_styling():
             letter-spacing: -0.02em;
         }
 
+        /* --- UPDATED TAGLINE STYLE --- */
         .tagline {
+            font-size: clamp(1.20rem, 4.85vw, 1.93rem) !important;
+            font-weight: 800;
             text-align: center;
-            font-weight: 700;
-            color: #93c5fd;
-            font-size: clamp(1.25rem, 4vw, 1.875rem);
-            margin: 1rem 0.5rem;
-            padding: 0 1rem;
+            font-family: 'Times New Roman', Times, serif !important;
+            max-width: 1200px;
+            margin: 2rem auto 4rem auto;
+            line-height: 1.2;
+            background: linear-gradient(to bottom, #93c5fd, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+            letter-spacing: -0.02em;
             position: relative;
             z-index: 20;
-            text-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
-            line-height: 1.4;
-            width: 100%;
         }
 
         /* --- RESPONSIVE IMAGE CONTAINERS --- */
@@ -221,20 +218,38 @@ def app_styling():
         }
 
         h2 {
-            font-size: clamp(1.5rem, 5.5vw, 2.5rem);
-            color: #f0f8ff;
-            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-            margin: 1.5rem 0.5rem;
+            font-size: clamp(1.5rem, 5vw, 2rem) !important; 
+            font-weight: 500 !important;
+            color: #FFFFF0 !important;
+            margin-top: 2rem !important;
+            margin-bottom: 0.5rem !important;
+            letter-spacing: -0.04em;
             padding: 0 1rem;
-            line-height: 1.3;
+            line-height: 1.1;
+            text-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
         }
 
         h3 {
-            font-size: clamp(1.125rem, 4vw, 1.75rem);
-            color: #93c5fd;
-            text-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
-            margin: 1rem 0.5rem;
-            line-height: 1.3;
+            font-size: clamp(1.3rem, 4.75vw, 1.75rem) !important;
+            font-weight: 400 !important;
+            color: #38bdf8 !important;
+            margin-top: 2rem !important;
+            margin-bottom: 1rem !important;
+            letter-spacing: -0.03em;
+        }
+
+        /* --- LARGE LABELS FOR ANALYSIS RESULTS --- */
+        .analysis-label {
+            font-size: clamp(1.3rem, 4.7vw, 1.5rem) !important;
+            font-weight: 400 !important;
+            color: #f1f5f9 !important;
+            margin: 1rem 0 1rem 0 !important;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-left: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         p, li, span {
@@ -255,69 +270,27 @@ def app_styling():
 
         /* Mobile optimization */
         @media (max-width: 768px) {
-            .title-container {
-                padding: 1rem 0.5rem;
-                gap: 0.25rem;
+            .title-container { padding: 1rem 0.5rem; gap: 0.25rem; }
+            .title-icon { margin-right: 0.5rem; }
+            .tagline { margin: 0.75rem 0; padding: 0 0.5rem; }
+            .image-container { padding: 1rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+            div[data-testid="stMetric"], div[data-testid="stInfo"], div[data-testid="stSuccess"], div[data-testid="stExpander"], div[data-testid="stWarning"] {
+                padding: 1.25rem; margin-bottom: 1.5rem; border-radius: 1rem; font-size: clamp(0.875rem, 2vw, 0.95rem);
             }
-
-            .title-icon {
-                margin-right: 0.5rem;
-            }
-
-            .tagline {
-                margin: 0.75rem 0;
-                padding: 0 0.5rem;
-            }
-
-            .image-container {
-                padding: 1rem;
-                border-radius: 1rem;
-                margin-bottom: 1.5rem;
-            }
-
-            div[data-testid="stMetric"],
-            div[data-testid="stInfo"],
-            div[data-testid="stSuccess"],
-            div[data-testid="stExpander"],
-            div[data-testid="stWarning"] {
-                padding: 1.25rem;
-                margin-bottom: 1.5rem;
-                border-radius: 1rem;
-                font-size: clamp(0.875rem, 2vw, 0.95rem);
-            }
-
-            section[data-testid="stSidebar"] {
-                width: 100% !important;
-            }
-
-            h1, h2, h3 {
-                padding: 0 0.5rem;
-            }
+            section[data-testid="stSidebar"] { width: 100% !important; }
+            h1, h2, h3 { padding: 0 0.5rem; }
         }
 
         /* Tablet optimization */
         @media (min-width: 769px) and (max-width: 1024px) {
-            .title-container {
-                padding: 1.25rem 0.75rem;
-            }
-
-            .image-container {
-                padding: 1.5rem;
-            }
+            .title-container { padding: 1.25rem 0.75rem; }
+            .image-container { padding: 1.5rem; }
         }
 
         /* ANIMATIONS */
         @keyframes pulse-icon-subtle {
-            0%, 100% { 
-                opacity: 1; 
-                transform: scale(1); 
-                filter: drop-shadow(0 0 8px #38bdf8);
-            }
-            50% { 
-                opacity: 0.88; 
-                transform: scale(1.08); 
-                filter: drop-shadow(0 0 12px #38bdf8);
-            }
+            0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 8px #38bdf8); }
+            50% { opacity: 0.88; transform: scale(1.08); filter: drop-shadow(0 0 12px #38bdf8); }
         }
 
         /* Footer */
@@ -336,36 +309,14 @@ def app_styling():
         }
 
         /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(10, 15, 26, 0.7);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(#38bdf8, #0ea5e9);
-            border-radius: 5px;
-            border: 2px solid rgba(10, 15, 26, 0.7);
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(#60a5fa, #38bdf8);
-        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(10, 15, 26, 0.7); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(#38bdf8, #0ea5e9); border-radius: 5px; border: 2px solid rgba(10, 15, 26, 0.7); }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(#60a5fa, #38bdf8); }
 
-        /* Ensure images and content don't overflow */
-        [data-testid="stAppViewContainer"] > div {
-            max-width: 100%;
-            overflow-x: hidden;
-        }
-
-        /* Button responsiveness */
-        button {
-            font-size: clamp(0.85rem, 2vw, 1rem) !important;
-        }
-
-        /* Input field responsiveness */
-        input, textarea, select {
-            font-size: clamp(0.85rem, 2vw, 1rem) !important;
-        }
+        [data-testid="stAppViewContainer"] > div { max-width: 100%; overflow-x: hidden; }
+        button { font-size: clamp(0.85rem, 2vw, 1rem) !important; }
+        input, textarea, select { font-size: clamp(0.85rem, 2vw, 1rem) !important; }
     </style>
 
     <!-- THREE.JS & VANTA.JS Libraries -->
@@ -379,56 +330,34 @@ def app_styling():
             window.vantaEffect = null;
         }
 
-        // Initialize Vanta.NET with VISIBLE network - optimized for all devices
+        // Initialize Vanta.NET
         function initVanta() {
             if (typeof VANTA !== 'undefined' && VANTA.NET) {
                 window.vantaEffect = VANTA.NET({
                     el: 'body',
-                    mouseControls: true,
-                    touchControls: true,
-                    gyroControls: true,
-                    minHeight: 200.00,
-                    minWidth: 200.00,
-                    scale: 1.00,
-                    scaleMobile: 1.00,
-                    color: 0x38bdf8,           // Sky blue for lines
-                    backgroundColor: 0x0a0f1a, // Deep black background
-                    points: 22,                 // DENSE network
-                    maxDistance: 32.0,         // Longer connections
-                    spacing: 20.0              // Tighter spacing
+                    mouseControls: true, touchControls: true, gyroControls: true,
+                    minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00,
+                    color: 0x38bdf8, backgroundColor: 0x0a0f1a,
+                    points: 22, maxDistance: 32.0, spacing: 20.0
                 });
             }
         }
 
-        // Initialize on page load
-        window.addEventListener('load', function() {
-            setTimeout(initVanta, 500);
-        });
-
-        // Reinit on Streamlit reruns
-        if (window.MutationObserver) {
-            const observer = new MutationObserver(function(mutations) {
-                if (!window.vantaEffect) {
-                    setTimeout(initVanta, 300);
-                }
-            });
-
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        }
-
-        // Fallback reinit every 5 seconds
-        setInterval(function() {
+        // Robust initialization
+        function robustInit() {
             if (!window.vantaEffect) {
                 initVanta();
             }
-        }, 5000);
+        }
+        
+        window.addEventListener('load', () => setTimeout(robustInit, 500));
+        
+        if (window.MutationObserver) {
+            new MutationObserver(mutations => robustInit()).observe(document.body, { childList: true, subtree: true });
+        }
+        setInterval(robustInit, 5000);
     </script>
     """, unsafe_allow_html=True)
-
-
 
 # --- Configuration & Model Loading ---
 @st.cache_resource
@@ -442,23 +371,18 @@ def load_model_and_config():
     model.eval()
     return model
 
-
-
 # --- Main Application ---
 st.set_page_config(
-    page_title="ClarityMD", 
-    layout="wide", 
-    page_icon="🩺", 
-    initial_sidebar_state="expanded",
-    menu_items={
-        'About': "### ClarityMD - Explainable AI Medical Diagnostics\nPowered by PyTorch Lightning & Groq"
-    }
+    page_title="ClarityMD", layout="wide", page_icon="🩺", initial_sidebar_state="expanded",
+    menu_items={'About': "### ClarityMD - Explainable AI Medical Diagnostics"}
 )
 app_styling()
 
+# --- NEW: Initialize Session State for History ---
+if 'history' not in st.session_state:
+    st.session_state.history = []
 
-
-# --- RESPONSIVE TITLE WITH SUBTLE GLOW ---
+# --- HEADER ---
 st.markdown("""
 <div class='title-container'>
     <span class='title-icon'>🩺</span>
@@ -466,7 +390,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<h3 class='tagline'>Illuminating the AI 'Black Box' with Medical Diagnostic Saliency Maps</h3>", unsafe_allow_html=True)
+st.markdown("<p class='tagline'>Illuminating the AI 'Black Box' with Medical Diagnostic Saliency Maps</p>", unsafe_allow_html=True)
 
 st.warning(
     "**Disclaimer:** This is a research prototype and **NOT** a certified medical device. "
@@ -474,19 +398,30 @@ st.warning(
     icon="⚠️"
 )
 
-
-
 model = load_model_and_config()
-
-
 
 if model is None:
     st.error("❌ Model checkpoint not found. Please run the training script `python models/train.py` first.")
 else:
+    # --- SIDEBAR ---
     st.sidebar.title("📁 Upload Scan")
     st.sidebar.markdown("**Supported formats:** JPEG, PNG")
     uploaded_file = st.sidebar.file_uploader("Choose an X-ray image...", type=["jpeg", "jpg", "png"])
-    
+
+    # --- NEW: History Section in Sidebar ---
+    st.sidebar.divider()
+    st.sidebar.title("📜 Analysis History")
+    if not st.session_state.history:
+        st.sidebar.write("No analyses yet.")
+    else:
+        # Display history items in reverse chronological order
+        for item in reversed(st.session_state.history):
+            with st.sidebar.expander(f"{item['timestamp']} - {item['filename']}"):
+                st.image(item['thumbnail'], use_container_width=True)
+                st.write(f"**Prediction:** {item['prediction']}")
+                st.write(f"**Confidence:** {item['confidence']:.1f}%")
+
+    # --- MAIN CONTENT ---
     if uploaded_file is not None:
         # --- ANALYSIS VIEW ---
         st.header("🔬 Analysis Results")
@@ -499,7 +434,6 @@ else:
         input_tensor = transformed_image.unsqueeze(0)
         input_tensor.requires_grad = True
 
-
         with torch.no_grad():
             output = model(input_tensor)
             probabilities = torch.nn.functional.softmax(output, dim=1)
@@ -509,122 +443,76 @@ else:
         class_names = {0: "NORMAL", 1: "PNEUMONIA"}
         predicted_class_name = class_names[predicted_class_idx]
 
-
         target_layer = model.model.layer4
         heatmap = generate_gradcam_attributions(model, input_tensor.squeeze(0), predicted_class_idx, target_layer)
         overlayed_image = overlay_heatmap_on_image(original_image, heatmap)
 
+        # --- NEW: Save the result to history ---
+        if not st.session_state.history or st.session_state.history[-1]['filename'] != uploaded_file.name:
+            thumbnail = original_image.copy()
+            thumbnail.thumbnail((100, 100))
+            now = datetime.now().strftime("%H:%M:%S")
+            st.session_state.history.append({
+                "filename": uploaded_file.name,
+                "prediction": predicted_class_name,
+                "confidence": confidence * 100,
+                "thumbnail": thumbnail,
+                "timestamp": now
+            })
 
+        # --- Display Results ---
         col1, col2 = st.columns(2)
         with col1:
-            st.subheader("📷 Original Image")
+            st.markdown('<p class="analysis-label">📷 Original Image</p>', unsafe_allow_html=True)
             original_b64 = get_image_as_base64(cv2.cvtColor(original_image_np, cv2.COLOR_RGB2BGR))
             st.markdown(f'<div class="image-container"><img src="data:image/jpeg;base64,{original_b64}" /></div>', unsafe_allow_html=True)
         with col2:
-            st.subheader("🎯 Explanation (Saliency Map)")
+            st.markdown('<p class="analysis-label">🎯 Explanation - Saliency Map</p>', unsafe_allow_html=True)
             overlay_b64 = get_image_as_base64(overlayed_image)
             st.markdown(f'<div class="image-container"><img src="data:image/jpeg;base64,{overlay_b64}" /></div>', unsafe_allow_html=True)
             
-        st.subheader("📊 Prediction Details")
+        st.markdown('<p class="analysis-label">📊 Prediction Details</p>', unsafe_allow_html=True)
         metric_col1, metric_col2 = st.columns(2)
         with metric_col1:
             st.metric(label="Predicted Diagnosis", value=predicted_class_name)
         with metric_col2:
             st.metric(label="Model Confidence", value=f"{confidence*100:.1f}%")
         
-        st.subheader("💬 AI-Generated Clinical Summary")
+        st.markdown('<p class="analysis-label">💬 AI-Generated Clinical Summary</p>', unsafe_allow_html=True)
         with st.spinner('🤖 Generating summary with Groq LLM...'):
             explanation_text = generate_llm_explanation(predicted_class_name, confidence)
             st.info(explanation_text)
 
-
     else:
         # --- WELCOME VIEW ---
-        st.markdown(
-            "<h2>About This Project: From Black Box to Glass Box AI</h2>",
-            unsafe_allow_html=True
-        )
-        
-        st.markdown("""
-        Traditional AI models often operate as a **'black box'**: they provide an answer but offer no insight into their reasoning. 
-        In high-stakes fields like medicine, this is a major barrier to trust and adoption. 
-        A doctor can't rely on a decision if they don't understand the 'why' behind it.
-        """)
-
-
-        st.markdown("""
-        This project transforms that paradigm by creating a **'glass box'** assistant. 
-        Our goal is not just to provide a prediction, but to open up the model's 'thought process' for human review. 
-        It achieves this by combining two key technologies:
-        """)
-
+        st.markdown("<h2>About This Project: From Black Box to Glass Box in Medical AI</h2>", unsafe_allow_html=True)
+        st.markdown("Traditional AI models often operate as a **'black box'**: they provide an answer but offer no insight into their reasoning...")
+        st.markdown("This project transforms that paradigm by creating a **'glass box'** assistant...")
 
         col1, col2 = st.columns(2)
         with col1:
             st.markdown("<h3>🔍 1. Visual Explanation (Saliency Maps)</h3>", unsafe_allow_html=True)
-            st.write("""
-                The AI generates a heatmap, or 'saliency map', overlaid on the X-ray. 
-                This map acts like a highlighter, showing the exact pixels and regions 
-                the model found most suspicious or important for its decision. 
-                This provides direct, visual evidence for a clinician to scrutinize.
-            """)
-
-
+            st.write("The AI generates a heatmap, or 'saliency map', overlaid on the X-ray...")
         with col2:
             st.markdown("<h3>🤖 2. Conversational Explanation (LLM)</h3>", unsafe_allow_html=True)
-            st.write("""
-                Using a powerful Large Language Model, the tool translates the complex 
-                findings into a clear, clinical summary. It even explains how to interpret 
-                the saliency map's colors, bridging the gap between the model's data 
-                and human understanding.
-            """)
+            st.write("Using a powerful Large Language Model, the tool translates the complex findings...")
         
-        st.success("""
-            ✅ The result is a trustworthy 'second opinion' that builds confidence 
-            and fosters collaboration between human expertise and artificial intelligence.
-        """)
-
+        st.success("✅ The result is a trustworthy 'second opinion'...")
 
         st.markdown("<h2>🚀 How to Use This Tool</h2>", unsafe_allow_html=True)
         st.markdown("""
-            **1. Upload a Scan:** Use the "Browse files" button in the sidebar to select a chest X-ray image.
-            
-            **2. View AI Analysis:** The tool automatically processes the image and displays:
-            - Prediction & confidence score
-            - Visual Saliency Map (heatmap explanation)
-            
-            **3. Read Summary:** AI-generated clinical explanation in plain language.
+            **1. Upload a Scan:** ...
+            **2. View AI Analysis:** ...
+            **3. Read Summary:** ...
         """)
-
-
         st.divider()
-
-
         with st.expander("🔧 Explore the Technology Stack", expanded=False):
             st.markdown("""
-            **Core ML Stack:**
-            - PyTorch & PyTorch Lightning
-            - Captum (Grad-CAM for XAI)
-            
-            **LLM Integration:**
-            - Llama 3 via Groq API
-            - LangChain Prompt Engineering
-            
-            **Frontend:**
-            - Streamlit + Vanta.js NET Effect (Animated Network Background)
-            - Responsive Design (Mobile, Tablet, Desktop)
-            - Glassmorphism UI with Backdrop Blur
-            
-            **Data Processing:**
-            - Scikit-learn, Pandas, NumPy
-            - OpenCV, Albumentations
-            
-            **Performance:**
-            - 60fps Smooth Animations
-            - Optimized for All Screen Sizes
-            - Touch & Gyro Controls
+            **Core ML Stack:** ...
+            **LLM Integration:** ...
+            **Frontend:** ...
+            **Data Processing:** ...
             """)
-
 
 st.markdown("""
 <div class='footer'>
