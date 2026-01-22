@@ -55,17 +55,17 @@ The core mission is **not to replace medical professionals**, but to **augment c
 ## 📸 Screenshots
 
 ### 🏠 Home Page - Clean Interface
-<img src="docs/home.png" alt="ClarityMD Home" width="800"/>
+<img src="ClarityMD-A-research-oriented-project/docs/home.png" alt="ClarityMD Home" width="800"/>
 
 *Professional dashboard with animated grid background and clear navigation*
 
 ### 🔬 Analysis Results - Side-by-Side Comparison
-<img src="docs/analysis.png" alt="Analysis Results" width="800"/>
+<img src="ClarityMD-A-research-oriented-project/docs/analysis.png" alt="Analysis Results" width="800"/>
 
 *Original X-ray alongside AI-generated saliency map with detailed metrics*
 
 ### 💬 AI Clinical Summary
-<img src="docs/summary.png" alt="Clinical Summary" width="800"/>
+<img src="ClarityMD-A-research-oriented-project/docs/summary.png" alt="Clinical Summary" width="800"/>
 
 *LLM-generated professional explanation with saliency map interpretation*
 
@@ -308,4 +308,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   Made with ❤️ and 🤖 for better healthcare
   
 </div>
+
 
