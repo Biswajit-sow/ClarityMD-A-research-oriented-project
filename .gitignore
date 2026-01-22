@@ -24,3 +24,8 @@ lightning_logs/
 checkpoints
 checkpoint
 models/checkpoints
+
+venv/
+.env/
+__pycache__/
+*.pyc

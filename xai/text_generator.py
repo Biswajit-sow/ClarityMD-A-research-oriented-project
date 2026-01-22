@@ -60,7 +60,7 @@ def generate_llm_explanation(class_name, confidence_score):
         # Use a powerful, available model from Groq
         llm = ChatGroq(
             groq_api_key=api_key,
-            model_name="llama3-70b-8192",
+            model_name="meta-llama/llama-4-scout-17b-16e-instruct",
             temperature=0.2 # Low temperature for factual, consistent output
         )
 
