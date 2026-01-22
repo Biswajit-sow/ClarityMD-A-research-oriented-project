@@ -2,8 +2,6 @@
 
 <div align="center">
   
-  ![ClarityMD Logo](frontend/logo.png)
-  
   **Illuminating the AI 'Black Box' with Medical Diagnostic Saliency Maps**
   
   [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -56,16 +54,19 @@ The core mission is **not to replace medical professionals**, but to **augment c
 
 ## 📸 Screenshots
 
-### Home Page - Clean Interface
-![ClarityMD Home](path/to/screenshot1.png)
+### 🏠 Home Page - Clean Interface
+<img src="docs/home.png" alt="ClarityMD Home" width="800"/>
+
 *Professional dashboard with animated grid background and clear navigation*
 
-### Analysis Results - Side-by-Side Comparison
-![Analysis Results](path/to/screenshot2.png)
+### 🔬 Analysis Results - Side-by-Side Comparison
+<img src="docs/analysis.png" alt="Analysis Results" width="800"/>
+
 *Original X-ray alongside AI-generated saliency map with detailed metrics*
 
-### AI Clinical Summary
-![Clinical Summary](path/to/screenshot3.png)
+### 💬 AI Clinical Summary
+<img src="docs/summary.png" alt="Clinical Summary" width="800"/>
+
 *LLM-generated professional explanation with saliency map interpretation*
 
 ---
