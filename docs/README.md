@@ -52,7 +52,7 @@ The core mission is **not to replace medical professionals**, but to **augment c
 
 ---
 
-## 📸 Screenshots
+## 📸Project overview
 
 ### 🏠 Home Page - Clean Interface
 <img src="ClarityMD-A-research-oriented-project/docs/home.png" alt="ClarityMD Home" width="800"/>
@@ -308,5 +308,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   Made with ❤️ and 🤖 for better healthcare
   
 </div>
+
 
 
