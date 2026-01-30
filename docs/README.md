@@ -1,4 +1,5 @@
 # 🩺 ClarityMD - Explainable Medical Diagnosis Assistant
+#linkedin:[https://www.linkedin.com/posts/biswajit-sow-49baa8289_artificialintelligence-machinelearning-explainableai-activity-7422550424831991810-Yn8u?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEYbarcBX1YGXCML-eelv44ecBTZQyTTAM0]
 
 <div align="center">
   
@@ -308,6 +309,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   Made with ❤️ and 🤖 for better healthcare
   
 </div>
+
 
 
 
