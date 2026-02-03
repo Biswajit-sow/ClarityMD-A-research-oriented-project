@@ -21,9 +21,10 @@ lightning_logs/
 # Any system files
 *.DS_Store
 
-checkpoints
-checkpoint
-models/checkpoints
+# checkpoints/
+# models/checkpoints/
+# *.ckpt
+
 
 venv/
 .env/
