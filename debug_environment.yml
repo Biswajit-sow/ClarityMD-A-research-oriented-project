@@ -1,0 +1,7 @@
+name: debug_env
+channels:
+  - https://repo.anaconda.com/pkgs/snowflake
+dependencies:
+  - python=3.9
+  - snowflake-snowpark-python
+  - streamlit
